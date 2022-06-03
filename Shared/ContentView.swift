@@ -8,82 +8,69 @@
 import SwiftUI
 
 struct ContentView: View {
+    
+//    init(){
+//        UINavigationBar.appearance().titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.black]
+//        UINavigationBar.appearance().largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.black]
+//    }
      
-    var food = ["foodA", "foodB", "foodC", "foodD"]
-    var foodName = ["Super Dinner Chow", "Exquisite chow", "Palatable chow", "New palatable chow"]
-    var locationName = ["Lagos", "Ibadan", "Akwa Ibo", "Ekiti"]
+    
+    @State var foodList = [
+    FoodModel(foodName:"Rice", loactionName: "Bariga", foodImage: "foodA"),
+    FoodModel(foodName:"Beans and Rice", loactionName: "Sabo", foodImage: "foodB"),
+    FoodModel(foodName:"Jollof rice", loactionName: "Ikeja", foodImage: "foodC"),
+    FoodModel(foodName:"Fish Stew", loactionName: "Magodo", foodImage: "foodD"),
+    FoodModel(foodName:"Fish Stew", loactionName: "Magodo", foodImage: "foodD"),
+    FoodModel(foodName:"Jollof rice", loactionName: "Ikeja", foodImage: "foodC"),
+    ]
     
     
     var body: some View {
-        List{
-            ForEach(food.indices, id: \.self){ index in
         
-            FoodView(foodImage: food[index], foodName: foodName[index], locationName: locationName[index])
-              
+      
+ 
+        NavigationView {
+            List{
+                ForEach(foodList.indices, id: \.self){ index in
             
+                    NavigationLink(destination: FoodDetails(foodModel: foodList[index])) {
+                        FoodView(foodModel: $foodList[index])
+                    }
+                  
+                
+                }
+                .listRowSeparator(.hidden)
+               
             }
-            .listRowSeparator(.hidden)
            
+            .listStyle(.plain)
+            .onAppear{
+                UITableView.appearance().showsVerticalScrollIndicator = false
         }
-       
-        .listStyle(.plain)
-        .onAppear{
-            UITableView.appearance().showsVerticalScrollIndicator = false
+            .navigationTitle("Food List")
+            .navigationBarTitleDisplayMode(.automatic)
+    
         }
-        
+     
       
         
     }
 }
 
 
-struct FoodView: View {
-    var foodImage: String
-    var foodName: String
-    var locationName: String
-    
-    @State private var showOption = false
-    
-    
-    var body: some View{
-        Image(foodImage)
-            .resizable()
-            .scaledToFill()
-            .frame(height:200)
-            .padding(.vertical, 10)
-            .shadow(color: .gray, radius: 2, x: 0, y: 3)
-            .onTapGesture {
-                showOption.toggle()
-            
-            }
-            .actionSheet(isPresented: $showOption){
-                ActionSheet(title: Text(foodName), message: nil, buttons: [
-                    .default(Text("Reserve a Table")){},
-                    .default(Text("Mark as Favourite")){},
-                    .cancel()
-                ])
-            }
-        VStack(alignment: .leading, spacing: 5){
-            Text(foodName)
-                .font(.system(size: 20, weight: .medium))
-                .foregroundColor(.black)
-            Text(locationName)
-                .font(.system(size: 20, weight: .medium))
-                .foregroundColor(.gray)
-            
-         
-            
-        }
-        .padding()
-        
-    }
-}
 
 
-
+// MARK: - Section 2
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
     }
 }
+
+//struct ContentView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ContentView()
+//            .environment(\.colorScheme, .dark)
+//    }
+//}
