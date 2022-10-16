@@ -12,6 +12,8 @@ struct FoodUIApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(FoodViewModel())
+              
         }
     }
 }
